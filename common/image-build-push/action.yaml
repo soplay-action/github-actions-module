@@ -10,6 +10,10 @@ inputs:
     description: 'set registry'
     required: true
     default: ''
+  DOCKER_USERNAME:
+    description: 'set docker username'
+    required: true
+    default: ''
   LOGIN_REGISTRY:
     description: 'set docker login registry url'
     required: false
