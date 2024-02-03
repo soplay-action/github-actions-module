@@ -18,6 +18,10 @@ inputs:
     description: 'set repositroy'
     required: true
     default: ''
+  IMAGE_TAG:
+    description: 'set iamge tag'
+    required: true
+    default: 'latest'
   HELM_CHART_PATH:
     description: 'set helm chart path'
     required: true
@@ -52,5 +56,5 @@ runs:
       shell: base
       run: |
         helm upgrade --install ${{ inputs.RELEASE_NAME }} ${{ inputs.HELM_CHART_PATH }} --create-namespace --namespace ${{ inputs.NAMESPACE }}  \
-        --set image.tag=${{ github.sha }} \
+        --set image.tag=${{ inputs.IMAGE_TAG }} \
         --set image.repository=${{ inputs.REPOSITORY }}
