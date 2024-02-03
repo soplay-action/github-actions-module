@@ -30,6 +30,10 @@ inputs:
     description: 'set docker image platforms ( default : "linux/amd64,linux/arm64" )'
     required: false
     default: 'linux/amd64,linux/arm64'
+  DOCKER_ACCESS_TOKEN:
+    description: 'set docker access token'
+    required: true
+    default: ''
 
 runs:
   using: composite
