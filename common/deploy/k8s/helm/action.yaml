@@ -1,0 +1,56 @@
+name: deploy-k8s-helm
+author: SOPLAY
+description: 'Use deploy-k8s-helm module'
+inputs:
+  KUBECTL_VERSION:
+    description: 'set kubectl version'
+    required: false
+    default: 'latest'
+  HELM_VERSION:
+    description: 'set helm version'
+    required: false
+    default: 'latest'
+  RELEASE_NAME:
+    description: 'set release name'
+    required: true
+    default: 'demo-app'
+  REPOSITORY:
+    description: 'set repositroy'
+    required: true
+    default: ''
+  HELM_CHART_PATH:
+    description: 'set helm chart path'
+    required: true
+    default: ''
+  NAMESPACE:
+    description: 'set namespace'
+    required: true
+    default: ''
+  KUBE_CONFIG_DATA:
+    description: 'set kubectl config data ( base64 )'
+    required: true
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: setup kubectle
+      uses: azure/setup-kubectl@v3
+      with:
+        version: ${{ inputs.KUBECTL_VERSION }}
+    - name: setup helm
+      uses: azure/setup-helm@v3
+      with:
+        version: ${{ inputs.HELM_VERSION }}
+    - name: setup kube config
+      shell: bash
+      run: |
+        mkdir -p ~/.kube
+        echo '${{ inputs.KUBE_CONFIG_DATA}}' | base64 -d >> ~/.kube/config
+    - name: deploy
+      id: status
+      shell: base
+      run: |
+        helm upgrade --install ${{ inputs.RELEASE_NAME }} ${{ inputs.HELM_CHART_PATH }} --create-namespace --namespace ${{ inputs.NAMESPACE }}  \
+        --set image.tag=${{ github.sha }} \
+        --set image.repository=${{ inputs.REPOSITORY }}

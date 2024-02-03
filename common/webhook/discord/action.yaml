@@ -1,0 +1,27 @@
+name: discord-webhook
+description: 'Send a message to a Discord webhook'
+inputs:
+  DEPLOY_STEP_STATUS:
+    description: 'deploy step status'
+    required: true
+    default: 'success'
+  ENVIRONMENT:
+    description: 'set environment '
+    required: true
+    default: 'dev'
+  WEBHOOK_URL:
+    description: 'set webhook url '
+    required: true
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: notify
+      uses: sarisia/actions-status-discord@v1
+      with:
+        webhook: ${{ inputs.WEBHOOK_URL }}
+        title: '${{ inputs.ENVIRONMENT }} 환경 배포'
+        description: |
+          ENVIRONMENT : `${{ inputs.ENVIRONMENT }}`
+          Deploy Result : `${{ inputs.DEPLOY_STEP_STATUS }}`

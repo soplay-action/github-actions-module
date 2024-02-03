@@ -1,0 +1,32 @@
+name: create-pr
+author: SOPLAY
+description: 'Use create-pr module'
+inputs:
+  GITHUB_TOKEN:
+    description: 'set github token'
+    required: true
+    default: ''
+  HEAD:
+    description: 'set head branch'
+    required: true
+    default: 'release/v0.0.0'
+  BASE:
+    description: 'set base branch'
+    required: true
+    default: 'main'
+
+runs:
+  using: composite
+  steps:
+    - name: gh auth login
+      shell: bash
+      run: echo ${{ inputs.GITHUB_TOKEN }} | gh auth login --with-token
+    - name: create branch
+      shell: bash
+      run: |
+        git checkout -b ${{ inputs.HEAD }}
+        git push origin ${{ inputs.HEAD }}
+    - name: create pr
+      shell: bash
+      run: |
+        gh pr create --base ${{ inputs.BASE }} --head ${{ inputs.HEAD }} --title '${{ inputs.HEAD }} -> ${{ inputs.BASE }}'

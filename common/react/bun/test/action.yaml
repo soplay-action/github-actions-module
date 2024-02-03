@@ -1,0 +1,34 @@
+name: react-bun-test
+author: SOPLAY
+description: 'React test with bun'
+inputs:
+  WORKDIR:
+    description: 'set working dir'
+    required: true
+    default: '.'
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: setup-bun
+      uses: oven-sh/setup-bun@v1
+    - name: Cache
+      uses: actions/cache@v3
+      with:
+        key: ${{runner.os}}-bun-${{hashFiles('**/bun.lockb')}}
+        restore-keys: ${{runner.os}}-bun-
+        path: |
+          ~/.bun
+    - name: install deps
+      shell: bash
+      run: bun i
+      working-directory: ${{ inputs.WORKDIR }}
+    - name: run test
+      shell: bash
+      run: bun run test
+      working-directory: ${{ inputs.WORKDIR }}
+    - name: build test
+      shell: bash
+      run: bun run build
+      working-directory: ${{ inputs.WORKDIR }}
