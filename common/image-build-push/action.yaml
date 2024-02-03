@@ -34,8 +34,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: checkout
-      uses: actions/checkout@v4
     - name: set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: set up Docker Buildx
