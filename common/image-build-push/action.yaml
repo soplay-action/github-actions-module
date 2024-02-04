@@ -17,7 +17,7 @@ inputs:
   LOGIN_REGISTRY:
     description: 'set docker login registry url'
     required: false
-    default: 'registry-1.docker.io/v2/'
+    default: ''
   IMAGE_TAG:
     description: 'set image tag'
     required: false
