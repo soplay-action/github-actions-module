@@ -53,7 +53,7 @@ runs:
         echo '${{ inputs.KUBE_CONFIG_DATA}}' | base64 -d >> ~/.kube/config
     - name: deploy
       id: status
-      shell: base
+      shell: bash
       run: |
         helm upgrade --install ${{ inputs.RELEASE_NAME }} ${{ inputs.HELM_CHART_PATH }} --create-namespace --namespace ${{ inputs.NAMESPACE }}  \
         --set image.tag=${{ inputs.IMAGE_TAG }} \
